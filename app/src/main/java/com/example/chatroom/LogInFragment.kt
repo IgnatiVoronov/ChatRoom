@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.chatroom.databinding.FragmentLogInBinding
 
 class LogInFragment : Fragment() {
@@ -28,10 +29,18 @@ class LogInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setUpViews()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setUpViews(){
+        binding.logInScreenSignUpButton.setOnClickListener {
+            findNavController().navigate(R.id.action_logInFragment_to_signUpFragment)
+        }
     }
 }
