@@ -7,7 +7,7 @@
     android:background="@color/smoky">
 
     <ImageView
-        android:id="@+id/signInScreenAppLogoImageView"
+        android:id="@+id/signUpScreenAppLogoImageView"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginTop="80dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"  />
 
     <EditText
-        android:id="@+id/signInScreenNameEditText"
+        android:id="@+id/signUpScreenNameEditText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -32,10 +32,10 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInScreenAppLogoImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpScreenAppLogoImageView" />
 
     <EditText
-        android:id="@+id/signInScreenEmailEditText"
+        android:id="@+id/signUpScreenEmailEditText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -48,10 +48,10 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInScreenNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpScreenNameEditText" />
 
     <EditText
-        android:id="@+id/signInScreenPasswordEditText"
+        android:id="@+id/signUpScreenPasswordEditText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
@@ -64,10 +64,10 @@
         android:paddingStart="15dp"
         android:paddingEnd="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInScreenEmailEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpScreenEmailEditText" />
 
     <Button
-        android:id="@+id/signInScreenSignUpButton"
+        android:id="@+id/signUpScreenSignUpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -78,6 +78,6 @@
         android:text="@string/sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInScreenPasswordEditText"/>
+        app:layout_constraintTop_toBottomOf="@+id/signUpScreenPasswordEditText"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
