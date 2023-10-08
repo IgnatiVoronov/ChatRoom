@@ -18,8 +18,12 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
-            android:id="@+id/action_logInFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_logInFragment_to_listOfUsersFragment"
+            app:destination="@id/listOfUsersFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -27,12 +31,24 @@
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_signUpFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_signUpFragment_to_listOfUsersFragment"
+            app:destination="@id/listOfUsersFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.example.chatroom.ChatFragment"
-        android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        android:id="@+id/listOfUsersFragment"
+        android:name="com.example.chatroom.ListOfUsersFragment"
+        android:label="ListOfUsersFragment"
+        tools:layout="@layout/fragment_list_of_users">
+        <action
+            android:id="@+id/action_listOfUsersFragment_to_logInFragment"
+            app:destination="@id/logInFragment"
+            app:enterAnim="@animator/slide_in_right"
+            app:exitAnim="@animator/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 </navigation>
