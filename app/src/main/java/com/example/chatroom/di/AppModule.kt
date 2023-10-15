@@ -1,18 +1,13 @@
 package com.example.chatroom.di
 
-import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.chatroom.data.Message
 import com.example.chatroom.data.User
-import com.example.chatroom.ui.ListOfUsersFragment
-import com.example.chatroom.ui.MainActivity
-import com.example.chatroom.ui.adapters.UserAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 
@@ -25,12 +20,17 @@ object AppModule {
     }
 
     @Provides
-    fun mDatabaseRef(): DatabaseReference{
+    fun mDatabaseRef(): DatabaseReference {
         return FirebaseDatabase.getInstance().reference
     }
 
     @Provides
-    fun userList(): ArrayList<User>{
+    fun userList(): ArrayList<User> {
+        return ArrayList()
+    }
+
+    @Provides
+    fun messageList(): ArrayList<Message> {
         return ArrayList()
     }
 }

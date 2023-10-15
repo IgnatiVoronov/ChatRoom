@@ -14,12 +14,12 @@ import com.example.chatroom.R
 
 class UserAdapter(
     val context: Context,
-    val userList: ArrayList<User>,
-    val viewModel: ChatViewModel
+    private val userList: ArrayList<User>,
+    private val viewModel: ChatViewModel
 ) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-    class UserViewHolder(private val binding: UserLayoutBinding) :
+    class UserViewHolder(binding: UserLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val textName = binding.nameTextView
     }
@@ -33,7 +33,7 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        var navController: NavController? = null
+        var navController: NavController?
         val currentUser = userList[position]
         holder.textName.text = currentUser.userName
 
