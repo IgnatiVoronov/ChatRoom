@@ -1,13 +1,22 @@
-package com.example.chatroom
+package com.example.chatroom.ui.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.chatroom.data.User
 import com.example.chatroom.databinding.UserLayoutBinding
+import com.example.chatroom.domain.ChatViewModel
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.example.chatroom.R
 
-class UserAdapter(val context: Context, val userList: ArrayList<User>) :
+
+class UserAdapter(
+    val context: Context,
+    val userList: ArrayList<User>,
+    val viewModel: ChatViewModel
+) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     class UserViewHolder(private val binding: UserLayoutBinding) :
@@ -24,17 +33,19 @@ class UserAdapter(val context: Context, val userList: ArrayList<User>) :
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+        var navController: NavController? = null
         val currentUser = userList[position]
         holder.textName.text = currentUser.userName
 
-        /*holder.itemView.setOnClickListener {
-            val intent = Intent(context, ListOfUsersFragment::class.java)
+        holder.itemView.setOnClickListener {
 
-            intent.putExtra("name", currentUser.userName)
-            intent.putExtra("uid", currentUser.uid)
+            viewModel.setName(currentUser.userName.toString())
+            viewModel.setUid(currentUser.uid.toString())
 
-            context.startActivity(intent)
-        }*/
+            navController = Navigation.findNavController(holder.itemView)
+            navController!!.navigate(R.id.action_listOfUsersFragment_to_chatFragment)
+
+        }
     }
 
     override fun getItemCount(): Int {

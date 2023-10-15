@@ -1,4 +1,4 @@
-package com.example.chatroom
+package com.example.chatroom.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,26 +11,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chatroom.R
+import com.example.chatroom.data.User
+import com.example.chatroom.ui.adapters.UserAdapter
 import com.example.chatroom.databinding.FragmentListOfUsersBinding
+import com.example.chatroom.domain.ChatViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class ListOfUsersFragment : Fragment() {
     private var _binding: FragmentListOfUsersBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var userList: ArrayList<User>
+
     private lateinit var adapter: UserAdapter
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDatabaseRef: DatabaseReference
+
+    @Inject
+    lateinit var userList: ArrayList<User>
+
+    @Inject
+    lateinit var mAuth: FirebaseAuth
+
+    @Inject
+    lateinit var mDatabaseRef: DatabaseReference
+
+    private val viewModel: ChatViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,14 +70,12 @@ class ListOfUsersFragment : Fragment() {
 
     private fun setUpViews() {
         //show action bar
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "ChatRoom"
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
 
         createMenu()
 
-        userList = ArrayList()
-        adapter = UserAdapter(requireContext(), userList)
-        mAuth = FirebaseAuth.getInstance()
-        mDatabaseRef = FirebaseDatabase.getInstance().reference
+        adapter = UserAdapter(requireContext(), userList, viewModel)
 
         binding.userRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.userRecyclerView.adapter = adapter
@@ -69,7 +83,7 @@ class ListOfUsersFragment : Fragment() {
         getDatabaseUsers()
     }
 
-    private fun createMenu(){
+    private fun createMenu() {
         //the menu for log out
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
@@ -90,14 +104,14 @@ class ListOfUsersFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun getDatabaseUsers(){
-        mDatabaseRef.child("user").addValueEventListener(object: ValueEventListener {
+    private fun getDatabaseUsers() {
+        mDatabaseRef.child("user").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear()
-                for(postSnapshot in snapshot.children){
+                for (postSnapshot in snapshot.children) {
                     val currentUser = postSnapshot.getValue(User::class.java)
 
-                    if(mAuth.currentUser?.uid != currentUser?.uid){
+                    if (mAuth.currentUser?.uid != currentUser?.uid) {
                         currentUser?.let { userList.add(it) }
                     }
                 }

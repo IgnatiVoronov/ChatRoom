@@ -1,4 +1,4 @@
-package com.example.chatroom
+package com.example.chatroom.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,15 +8,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.chatroom.R
 import com.example.chatroom.databinding.FragmentLogInBinding
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class LogInFragment : Fragment() {
 
     private var _binding: FragmentLogInBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mAuth: FirebaseAuth
+
+
+    @Inject
+    lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,8 +52,6 @@ class LogInFragment : Fragment() {
         binding.logInScreenSignUpButton.setOnClickListener {
             findNavController().navigate(R.id.action_logInFragment_to_signUpFragment)
         }
-
-        mAuth = FirebaseAuth.getInstance()
 
         binding.logInScreenLogInButton.setOnClickListener {
             val email = binding.logInScreenEmailEditText.text.toString()

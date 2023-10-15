@@ -1,6 +1,5 @@
-package com.example.chatroom
+package com.example.chatroom.ui
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,20 +8,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
-import com.example.chatroom.databinding.FragmentLogInBinding
+import com.example.chatroom.R
+import com.example.chatroom.data.User
 import com.example.chatroom.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mDatabaseRef: DatabaseReference
+    @Inject
+    lateinit var mAuth: FirebaseAuth
+
+    @Inject
+    lateinit var mDatabaseRef: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +49,8 @@ class SignUpFragment : Fragment() {
         _binding = null
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
-        mAuth = FirebaseAuth.getInstance()
 
         binding.signUpScreenSignUpButton.setOnClickListener {
             val name = binding.signUpScreenNameEditText.text.toString()
@@ -74,7 +78,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun addUserToDatabase(name: String, email: String, uid: String) {
-        mDatabaseRef = FirebaseDatabase.getInstance().reference
         mDatabaseRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 }
