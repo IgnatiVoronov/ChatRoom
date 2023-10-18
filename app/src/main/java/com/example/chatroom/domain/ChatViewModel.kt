@@ -91,6 +91,7 @@ class ChatViewModel @Inject constructor() : ViewModel() {
                         message?.let { messageList.add(it) }
                     }
                     messageAdapter.notifyDataSetChanged()
+                    //scroll to the last message
                     chatRecyclerView.scrollToPosition(messageAdapter.itemCount - 1)
                 }
 

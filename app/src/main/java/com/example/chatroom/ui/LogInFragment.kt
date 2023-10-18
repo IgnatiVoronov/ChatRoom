@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -46,6 +47,11 @@ class LogInFragment : Fragment() {
     private fun setUpViews() {
         //hide action bar
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+
+        //custom back navigation
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            activity?.finish()
+        }
 
         binding.logInScreenSignUpButton.setOnClickListener {
             findNavController().navigate(R.id.action_logInFragment_to_signUpFragment)
