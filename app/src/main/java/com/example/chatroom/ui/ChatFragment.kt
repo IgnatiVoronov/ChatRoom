@@ -13,7 +13,6 @@ import com.example.chatroom.databinding.FragmentChatBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.example.chatroom.ui.adapters.MessageAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,9 +23,6 @@ class ChatFragment : Fragment() {
 
     @Inject
     lateinit var messageList: ArrayList<Message>
-
-    @Inject
-    lateinit var mDatabaseRef: DatabaseReference
 
     private lateinit var messageAdapter: MessageAdapter
 
@@ -74,7 +70,6 @@ class ChatFragment : Fragment() {
             senderRoom!!,
             messageList,
             messageAdapter,
-            mDatabaseRef,
             binding.chatRecyclerView
         )
 
@@ -83,8 +78,7 @@ class ChatFragment : Fragment() {
             senderRoom!!,
             receiverRoom!!,
             binding.sendButtonImageView,
-            binding.messageBoxEditText,
-            mDatabaseRef
+            binding.messageBoxEditText
         )
     }
 

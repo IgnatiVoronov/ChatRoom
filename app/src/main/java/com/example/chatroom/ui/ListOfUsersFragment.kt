@@ -21,7 +21,6 @@ import com.example.chatroom.databinding.FragmentListOfUsersBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.example.chatroom.ui.adapters.UserAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -35,9 +34,6 @@ class ListOfUsersFragment : Fragment() {
 
     @Inject
     lateinit var mAuth: FirebaseAuth
-
-    @Inject
-    lateinit var mDatabaseRef: DatabaseReference
 
     private lateinit var adapter: UserAdapter
     private val viewModel: ChatViewModel by activityViewModels()
@@ -72,7 +68,7 @@ class ListOfUsersFragment : Fragment() {
         binding.userRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.userRecyclerView.adapter = adapter
 
-        viewModel.getDatabaseUsers(mDatabaseRef, userList, mAuth, adapter)
+        viewModel.getDatabaseUsers(userList, adapter)
     }
 
     private fun createMenu(mAuth: FirebaseAuth) {

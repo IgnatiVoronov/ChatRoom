@@ -19,7 +19,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor() : ViewModel() {
+class ChatViewModel @Inject constructor(
+    var mDatabaseRef: DatabaseReference,
+    var mAuth: FirebaseAuth
+    ) : ViewModel() {
 
     private val _userName = MutableLiveData("name")
     val userName: LiveData<String>
@@ -41,16 +44,13 @@ class ChatViewModel @Inject constructor() : ViewModel() {
     fun addUserToDatabase(
         name: String,
         email: String,
-        uid: String,
-        mDatabaseRef: DatabaseReference
+        uid: String
     ) {
         mDatabaseRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
     fun getDatabaseUsers(
-        mDatabaseRef: DatabaseReference,
         userList: ArrayList<User>,
-        mAuth: FirebaseAuth,
         adapter: UserAdapter
     ) {
         mDatabaseRef.child("user").addValueEventListener(object : ValueEventListener {
@@ -76,7 +76,6 @@ class ChatViewModel @Inject constructor() : ViewModel() {
         senderRoom: String,
         messageList: ArrayList<Message>,
         messageAdapter: MessageAdapter,
-        mDatabaseRef: DatabaseReference,
         chatRecyclerView: RecyclerView
     ) {
         //logic of adding data to recyclerView
@@ -106,8 +105,7 @@ class ChatViewModel @Inject constructor() : ViewModel() {
         senderRoom: String,
         receiverRoom: String,
         sendButtonImageView: ImageView,
-        messageBoxEditText: EditText,
-        mDatabaseRef: DatabaseReference
+        messageBoxEditText: EditText
     ) {
         //adding the message to database
         sendButtonImageView.setOnClickListener {
