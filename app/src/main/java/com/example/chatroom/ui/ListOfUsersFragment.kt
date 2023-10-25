@@ -83,7 +83,7 @@ class ListOfUsersFragment : Fragment() {
                 // Handle the menu selection
                 if (menuItem.itemId == R.id.logOut) {
                     mAuth.signOut()
-                    findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)
+                    findNavController().popBackStack()
                     return true
                 }
                 return true

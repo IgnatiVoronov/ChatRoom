@@ -1,23 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:text="Mike"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/no_image_user"/>
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Mike"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/nameTextView"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/relativeLayout"
         android:background="@color/black" />
 
 
