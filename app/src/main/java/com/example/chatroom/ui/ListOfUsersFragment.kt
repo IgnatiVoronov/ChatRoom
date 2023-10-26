@@ -21,6 +21,7 @@ import com.example.chatroom.databinding.FragmentListOfUsersBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.example.chatroom.ui.adapters.UserAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -34,6 +35,9 @@ class ListOfUsersFragment : Fragment() {
 
     @Inject
     lateinit var mAuth: FirebaseAuth
+
+    @Inject
+    lateinit var mDatabaseRef: DatabaseReference
 
     private lateinit var adapter: UserAdapter
     private val viewModel: ChatViewModel by activityViewModels()
@@ -76,7 +80,7 @@ class ListOfUsersFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu, menu)
+                menuInflater.inflate(R.menu.list_of_users_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -84,6 +88,11 @@ class ListOfUsersFragment : Fragment() {
                 if (menuItem.itemId == R.id.logOut) {
                     mAuth.signOut()
                     findNavController().popBackStack()
+                    return true
+                }else if(menuItem.itemId == R.id.deleteAccount){
+                    mAuth.currentUser?.delete()
+                    mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).removeValue()
+                    findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)
                     return true
                 }
                 return true

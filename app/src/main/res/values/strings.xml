@@ -11,4 +11,6 @@
     <string name="name">Name</string>
     <string name="log_out">Log out</string>
     <string name="type_a_message">Type a message</string>
+    <string name="clear_chat">Clear chat</string>
+    <string name="delete_account">Delete account</string>
 </resources>
