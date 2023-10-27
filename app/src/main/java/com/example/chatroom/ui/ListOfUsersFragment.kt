@@ -62,7 +62,9 @@ class ListOfUsersFragment : Fragment() {
 
     private fun setUpViews() {
         //show action bar
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "ChatRoom"
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            viewModel.currentUserName.value
+
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
 
         createMenu(mAuth)
@@ -89,7 +91,7 @@ class ListOfUsersFragment : Fragment() {
                     mAuth.signOut()
                     findNavController().popBackStack()
                     return true
-                }else if(menuItem.itemId == R.id.deleteAccount){
+                } else if (menuItem.itemId == R.id.deleteAccount) {
                     mAuth.currentUser?.delete()
                     mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).removeValue()
                     findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)

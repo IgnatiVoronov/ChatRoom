@@ -22,7 +22,11 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     var mDatabaseRef: DatabaseReference,
     var mAuth: FirebaseAuth
-    ) : ViewModel() {
+) : ViewModel() {
+
+    private val _currentUserName = MutableLiveData("name")
+    val currentUserName: LiveData<String>
+        get() = _currentUserName
 
     private val _userName = MutableLiveData("name")
     val userName: LiveData<String>
@@ -32,6 +36,17 @@ class ChatViewModel @Inject constructor(
     val uid: LiveData<String>
         get() = _uid
 
+    private val _senderRoom = MutableLiveData("senderRoom")
+    val senderRoom: LiveData<String>
+        get() = _senderRoom
+
+    private val _receiverRoom = MutableLiveData("receiverRoom")
+    val receiverRoom: LiveData<String>
+        get() = _receiverRoom
+
+    fun setCurrentUserName(currentUserName: String) {
+        _currentUserName.value = currentUserName
+    }
 
     fun setName(userName: String) {
         _userName.value = userName
@@ -39,6 +54,14 @@ class ChatViewModel @Inject constructor(
 
     fun setUid(uid: String) {
         _uid.value = uid
+    }
+
+    fun setSenderRoom(senderRoom: String) {
+        _senderRoom.value = senderRoom
+    }
+
+    fun setReceiverRoom(receiverRoom: String) {
+        _receiverRoom.value = receiverRoom
     }
 
     fun addUserToDatabase(
@@ -73,13 +96,12 @@ class ChatViewModel @Inject constructor(
     }
 
     fun addDateToRecyclerView(
-        senderRoom: String,
         messageList: ArrayList<Message>,
         messageAdapter: MessageAdapter,
         chatRecyclerView: RecyclerView
     ) {
         //logic of adding data to recyclerView
-        mDatabaseRef.child("chats").child(senderRoom).child("messages")
+        mDatabaseRef.child("chats").child(senderRoom.value!!).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     //clear previous messageList
@@ -95,15 +117,12 @@ class ChatViewModel @Inject constructor(
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
                 }
             })
     }
 
     fun addMessageToDatabase(
         senderUid: String,
-        senderRoom: String,
-        receiverRoom: String,
         sendButtonImageView: ImageView,
         messageBoxEditText: EditText
     ) {
@@ -113,13 +132,20 @@ class ChatViewModel @Inject constructor(
             val messageObject = Message(message, senderUid)
 
             //create node of chat
-            mDatabaseRef.child("chats").child(senderRoom).child("messages").push()
+            mDatabaseRef.child("chats").child(senderRoom.value!!).child("messages").push()
                 .setValue(messageObject).addOnSuccessListener {
-                    mDatabaseRef.child("chats").child(receiverRoom).child("messages").push()
+                    mDatabaseRef.child("chats").child(receiverRoom.value!!).child("messages").push()
                         .setValue(messageObject)
                 }
             //clear message box after sending message
             messageBoxEditText.setText("")
         }
+    }
+
+    fun getCurrentUserName() {
+        mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).child("userName").get()
+            .addOnSuccessListener {
+                setCurrentUserName(it.value.toString())
+            }
     }
 }
