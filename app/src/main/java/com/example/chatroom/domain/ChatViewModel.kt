@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class ChatViewModel @Inject constructor(
@@ -142,10 +144,11 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentUserName() {
+    suspend fun getCurrentUserName() = suspendCoroutine<DataSnapshot>{continuation ->
         mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).child("userName").get()
             .addOnSuccessListener {
                 setCurrentUserName(it.value.toString())
+                continuation.resume(it)
             }
     }
 }

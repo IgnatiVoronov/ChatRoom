@@ -8,13 +8,10 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.chatroom.R
 import com.example.chatroom.databinding.FragmentLogInBinding
-import com.example.chatroom.domain.ChatViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,12 +24,8 @@ class LogInFragment : Fragment() {
     @Inject
     lateinit var mAuth: FirebaseAuth
 
-    private val viewModel: ChatViewModel by activityViewModels()
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLogInBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,7 +33,6 @@ class LogInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setUpViews()
     }
 
@@ -49,11 +41,11 @@ class LogInFragment : Fragment() {
         _binding = null
     }
 
-    private fun setUpViews() {
+    private fun setUpViews(){
         //hide action bar
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
 
-        //custom back navigation
+        //close app after push "back"
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             activity?.finish()
         }
@@ -66,7 +58,6 @@ class LogInFragment : Fragment() {
             val email = binding.logInScreenEmailEditText.text.toString()
             val password = binding.logInScreenPasswordEditText.text.toString()
             login(email, password)
-            viewModel.getCurrentUserName()
         }
     }
 
