@@ -17,9 +17,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
-class ChatViewModel @Inject constructor() : ViewModel() {
+class ChatViewModel @Inject constructor(
+    var mDatabaseRef: DatabaseReference,
+    var mAuth: FirebaseAuth
+) : ViewModel() {
+
+    private val _currentUserName = MutableLiveData("name")
+    val currentUserName: LiveData<String>
+        get() = _currentUserName
 
     private val _userName = MutableLiveData("name")
     val userName: LiveData<String>
@@ -29,6 +38,17 @@ class ChatViewModel @Inject constructor() : ViewModel() {
     val uid: LiveData<String>
         get() = _uid
 
+    private val _senderRoom = MutableLiveData("senderRoom")
+    val senderRoom: LiveData<String>
+        get() = _senderRoom
+
+    private val _receiverRoom = MutableLiveData("receiverRoom")
+    val receiverRoom: LiveData<String>
+        get() = _receiverRoom
+
+    fun setCurrentUserName(currentUserName: String) {
+        _currentUserName.value = currentUserName
+    }
 
     fun setName(userName: String) {
         _userName.value = userName
@@ -38,19 +58,24 @@ class ChatViewModel @Inject constructor() : ViewModel() {
         _uid.value = uid
     }
 
+    fun setSenderRoom(senderRoom: String) {
+        _senderRoom.value = senderRoom
+    }
+
+    fun setReceiverRoom(receiverRoom: String) {
+        _receiverRoom.value = receiverRoom
+    }
+
     fun addUserToDatabase(
         name: String,
         email: String,
-        uid: String,
-        mDatabaseRef: DatabaseReference
+        uid: String
     ) {
         mDatabaseRef.child("user").child(uid).setValue(User(name, email, uid))
     }
 
     fun getDatabaseUsers(
-        mDatabaseRef: DatabaseReference,
         userList: ArrayList<User>,
-        mAuth: FirebaseAuth,
         adapter: UserAdapter
     ) {
         mDatabaseRef.child("user").addValueEventListener(object : ValueEventListener {
@@ -73,14 +98,12 @@ class ChatViewModel @Inject constructor() : ViewModel() {
     }
 
     fun addDateToRecyclerView(
-        senderRoom: String,
         messageList: ArrayList<Message>,
         messageAdapter: MessageAdapter,
-        mDatabaseRef: DatabaseReference,
         chatRecyclerView: RecyclerView
     ) {
         //logic of adding data to recyclerView
-        mDatabaseRef.child("chats").child(senderRoom).child("messages")
+        mDatabaseRef.child("chats").child(senderRoom.value!!).child("messages")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     //clear previous messageList
@@ -91,22 +114,19 @@ class ChatViewModel @Inject constructor() : ViewModel() {
                         message?.let { messageList.add(it) }
                     }
                     messageAdapter.notifyDataSetChanged()
+                    //scroll to the last message
                     chatRecyclerView.scrollToPosition(messageAdapter.itemCount - 1)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
                 }
             })
     }
 
     fun addMessageToDatabase(
         senderUid: String,
-        senderRoom: String,
-        receiverRoom: String,
         sendButtonImageView: ImageView,
-        messageBoxEditText: EditText,
-        mDatabaseRef: DatabaseReference
+        messageBoxEditText: EditText
     ) {
         //adding the message to database
         sendButtonImageView.setOnClickListener {
@@ -114,13 +134,21 @@ class ChatViewModel @Inject constructor() : ViewModel() {
             val messageObject = Message(message, senderUid)
 
             //create node of chat
-            mDatabaseRef.child("chats").child(senderRoom).child("messages").push()
+            mDatabaseRef.child("chats").child(senderRoom.value!!).child("messages").push()
                 .setValue(messageObject).addOnSuccessListener {
-                    mDatabaseRef.child("chats").child(receiverRoom).child("messages").push()
+                    mDatabaseRef.child("chats").child(receiverRoom.value!!).child("messages").push()
                         .setValue(messageObject)
                 }
             //clear message box after sending message
             messageBoxEditText.setText("")
         }
+    }
+
+    suspend fun getCurrentUserName() = suspendCoroutine<DataSnapshot>{continuation ->
+        mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).child("userName").get()
+            .addOnSuccessListener {
+                setCurrentUserName(it.value.toString())
+                continuation.resume(it)
+            }
     }
 }

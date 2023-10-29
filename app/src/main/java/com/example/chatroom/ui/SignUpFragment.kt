@@ -13,7 +13,6 @@ import com.example.chatroom.R
 import com.example.chatroom.databinding.FragmentSignUpBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -25,9 +24,6 @@ class SignUpFragment : Fragment() {
 
     @Inject
     lateinit var mAuth: FirebaseAuth
-
-    @Inject
-    lateinit var mDatabaseRef: DatabaseReference
 
     private val viewModel: ChatViewModel by activityViewModels()
 
@@ -68,7 +64,7 @@ class SignUpFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    mAuth.currentUser?.uid?.let { viewModel.addUserToDatabase(name, email, it, mDatabaseRef) }
+                    mAuth.currentUser?.uid?.let { viewModel.addUserToDatabase(name, email, it) }
                     findNavController().navigate(R.id.action_signUpFragment_to_listOfUsersFragment)
 
                 } else {
