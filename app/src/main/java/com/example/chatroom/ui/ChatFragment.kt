@@ -1,5 +1,7 @@
 package com.example.chatroom.ui
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -7,12 +9,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatroom.R
 import com.example.chatroom.data.Message
@@ -61,6 +65,17 @@ class ChatFragment : Fragment() {
 
     private fun setUpViews() {
         (requireActivity() as AppCompatActivity).supportActionBar?.title = viewModel.userName.value
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_chatFragment_to_listOfUsersFragment)
+        }
+
+        val applicationInfo: ApplicationInfo = requireActivity().packageManager
+            .getApplicationInfo(requireActivity().packageName, PackageManager.GET_META_DATA)
+        val apiKey = applicationInfo.metaData.getString("keyValue")
+        apiKey?.let { viewModel.setApiKey(it) }
+
         messageAdapter = MessageAdapter(requireContext(), messageList)
 
         val receiverUid = viewModel.uid.value

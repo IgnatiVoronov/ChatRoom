@@ -5,6 +5,9 @@ plugins {
 
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+
+    //secret key
+    id("com.google.secrets_gradle_plugin") version "0.4"
 }
 
 android {
@@ -49,6 +52,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth:22.1.2")
     implementation("com.google.firebase:firebase-database:20.2.2")
+    implementation("com.google.firebase:firebase-messaging:23.3.1")
 
     //navGraph
     val nav_version = "2.7.4"
@@ -82,6 +86,11 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    //okHttp
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+
 }
 kapt {
     correctErrorTypes = true

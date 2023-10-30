@@ -55,6 +55,7 @@ class SignUpFragment : Fragment() {
             val email = binding.signUpScreenEmailEditText.text.toString()
             val password = binding.signUpScreenPasswordEditText.text.toString()
             signUp(name, email, password)
+            viewModel.getFCMToken()
         }
     }
 
