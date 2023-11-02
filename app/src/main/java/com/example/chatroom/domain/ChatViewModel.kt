@@ -181,7 +181,7 @@ class ChatViewModel @Inject constructor(
             }
     }
 
-    fun getFCMToken() {
+    fun addFCMTokenToDatabase() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val token = task.result
@@ -189,6 +189,13 @@ class ChatViewModel @Inject constructor(
                     .setValue(token)
             }
         }
+    }
+
+    fun getFCMTokenFromDatabase(uid: String) {
+        mDatabaseRef.child("user").child(uid).child("fcmToken").get()
+            .addOnSuccessListener {
+                setFCNToken(it.value.toString())
+            }
     }
 
     private fun sendNotification(message: String) {
@@ -210,7 +217,7 @@ class ChatViewModel @Inject constructor(
                     jsonObject.put("to", fcmToken.value)
 
                     callApi(jsonObject)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
 
                 }
             }

@@ -43,6 +43,7 @@ class LogInFragment : Fragment() {
             val userName = requireActivity().intent.extras?.getString("userName")
             uid?.let { viewModel.setUid(it) }
             userName?.let { viewModel.setName(it) }
+            uid?.let { viewModel.getFCMTokenFromDatabase(it) }
             requireActivity().intent.removeExtra("uid")
             requireActivity().intent.removeExtra("userName")
             findNavController().navigate(R.id.action_logInFragment_to_chatFragment)
@@ -73,7 +74,7 @@ class LogInFragment : Fragment() {
             val email = binding.logInScreenEmailEditText.text.toString()
             val password = binding.logInScreenPasswordEditText.text.toString()
             login(email, password)
-            viewModel.getFCMToken()
+            viewModel.addFCMTokenToDatabase()
 
         }
     }
