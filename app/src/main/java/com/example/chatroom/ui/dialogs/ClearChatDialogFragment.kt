@@ -1,4 +1,4 @@
-package com.example.chatroom.ui
+package com.example.chatroom.ui.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog

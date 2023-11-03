@@ -1,4 +1,4 @@
-package com.example.chatroom.network
+package com.example.chatroom.notifications
 
 import com.google.firebase.messaging.FirebaseMessagingService
 
