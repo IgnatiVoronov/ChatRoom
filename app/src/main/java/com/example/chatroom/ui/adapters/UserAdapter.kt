@@ -41,6 +41,7 @@ class UserAdapter(
 
             viewModel.setName(currentUser.userName.toString())
             viewModel.setUid(currentUser.uid.toString())
+            viewModel.setFCNToken(currentUser.fcmToken.toString())
 
             navController = Navigation.findNavController(holder.itemView)
             navController!!.navigate(R.id.action_listOfUsersFragment_to_chatFragment)
