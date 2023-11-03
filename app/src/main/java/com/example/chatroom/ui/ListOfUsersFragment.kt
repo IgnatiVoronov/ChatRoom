@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -65,9 +66,9 @@ class ListOfUsersFragment : Fragment() {
         _binding = null
     }
 
-    private suspend fun setUpViews() = coroutineScope{
+    private suspend fun setUpViews() = coroutineScope {
 
-        val job = launch{
+        val job = launch {
             viewModel.getCurrentUserName()
         }
         job.join()
@@ -75,6 +76,10 @@ class ListOfUsersFragment : Fragment() {
         (requireActivity() as AppCompatActivity).supportActionBar?.title =
             viewModel.currentUserName.value
         (requireActivity() as AppCompatActivity).supportActionBar?.show()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)
+        }
 
         createMenu(mAuth)
 
@@ -93,6 +98,7 @@ class ListOfUsersFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.list_of_users_menu, menu)
             }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Handle the menu selection
                 if (menuItem.itemId == R.id.logOut) {
