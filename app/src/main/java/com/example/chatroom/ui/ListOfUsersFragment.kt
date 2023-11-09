@@ -22,6 +22,7 @@ import com.example.chatroom.data.User
 import com.example.chatroom.databinding.FragmentListOfUsersBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.example.chatroom.ui.adapters.UserAdapter
+import com.example.chatroom.ui.dialogs.DeleteAccountDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
@@ -106,9 +107,10 @@ class ListOfUsersFragment : Fragment() {
                     findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)
                     return true
                 } else if (menuItem.itemId == R.id.deleteAccount) {
-                    mAuth.currentUser?.delete()
-                    mDatabaseRef.child("user").child(mAuth.currentUser!!.uid).removeValue()
-                    findNavController().navigate(R.id.action_listOfUsersFragment_to_logInFragment)
+                    DeleteAccountDialogFragment().show(
+                        requireActivity().supportFragmentManager,
+                        "DELETE_ACCOUNT_DIALOG"
+                    )
                     return true
                 }
                 return true

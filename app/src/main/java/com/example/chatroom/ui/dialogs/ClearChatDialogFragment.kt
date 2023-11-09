@@ -1,4 +1,4 @@
-package com.example.chatroom.ui
+package com.example.chatroom.ui.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -21,6 +21,7 @@ class ClearChatDialogFragment : DialogFragment() {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
             var clearEverywhereChecked = false
+            val items = arrayOf("Clear everywhere")
             builder.setTitle("Clear chat?")
                 .setPositiveButton("Yes") { _, _ ->
                     if (clearEverywhereChecked) {
@@ -39,7 +40,7 @@ class ClearChatDialogFragment : DialogFragment() {
                 .setNegativeButton("Cancel") { _, _ ->
                     // User cancelled the dialog.
                 }
-                .setMultiChoiceItems(arrayOf("Clear everywhere"), null) { _, _, _ ->
+                .setMultiChoiceItems(items, null) { _, _, _ ->
                     clearEverywhereChecked = true
                 }
             builder.create()

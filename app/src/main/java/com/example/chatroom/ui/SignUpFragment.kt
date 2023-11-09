@@ -54,8 +54,16 @@ class SignUpFragment : Fragment() {
             val name = binding.signUpScreenNameEditText.text.toString()
             val email = binding.signUpScreenEmailEditText.text.toString()
             val password = binding.signUpScreenPasswordEditText.text.toString()
-            signUp(name, email, password)
-            viewModel.addFCMTokenToDatabase()
+            try {
+                signUp(name, email, password)
+            } catch (_: IllegalArgumentException) {
+                Toast.makeText(
+                    requireContext(),
+                    "Enter your name, email and password!",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
     }
 
@@ -65,6 +73,7 @@ class SignUpFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    viewModel.addFCMTokenToDatabase()
                     mAuth.currentUser?.uid?.let { viewModel.addUserToDatabase(name, email, it) }
                     findNavController().navigate(R.id.action_signUpFragment_to_listOfUsersFragment)
 

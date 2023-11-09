@@ -38,7 +38,7 @@ class LogInFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (requireActivity().intent.extras != null && mAuth.currentUser != null) {
+        if (requireActivity().intent.extras?.getString("uid") != null && mAuth.currentUser != null) {
             val uid = requireActivity().intent.extras?.getString("uid")
             val userName = requireActivity().intent.extras?.getString("userName")
             uid?.let { viewModel.setUid(it) }
@@ -47,9 +47,9 @@ class LogInFragment : Fragment() {
             requireActivity().intent.removeExtra("uid")
             requireActivity().intent.removeExtra("userName")
             findNavController().navigate(R.id.action_logInFragment_to_chatFragment)
+        } else {
+            setUpViews()
         }
-
-        setUpViews()
     }
 
     override fun onDestroyView() {
@@ -73,9 +73,16 @@ class LogInFragment : Fragment() {
         binding.logInScreenLogInButton.setOnClickListener {
             val email = binding.logInScreenEmailEditText.text.toString()
             val password = binding.logInScreenPasswordEditText.text.toString()
-            login(email, password)
-            viewModel.addFCMTokenToDatabase()
-
+            try {
+                login(email, password)
+            } catch (_: IllegalArgumentException) {
+                Toast.makeText(
+                    requireContext(),
+                    "Enter your email and password!",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
     }
 
@@ -85,6 +92,7 @@ class LogInFragment : Fragment() {
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Log in success, update UI with the log-in user's information
+                    viewModel.addFCMTokenToDatabase()
                     findNavController().navigate(R.id.action_logInFragment_to_listOfUsersFragment)
                 } else {
                     // If log in fails, display a message to the user.
