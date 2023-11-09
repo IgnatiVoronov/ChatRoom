@@ -4,8 +4,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="smoky">#f2eee3</color>
     <color name="blue">#5065a8</color>
+    <color name="blue_2">#4678f3</color>
     <color name="light_blue">#aeb4ca</color>
     <color name="grey">#979797</color>
     <color name="light_grey">#B3B3B3</color>
     <color name="dark_blue">#15375C</color>
+    <color name="very_light_blue">#DFF0FF</color>
 </resources>
