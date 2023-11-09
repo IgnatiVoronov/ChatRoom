@@ -23,6 +23,7 @@ import com.example.chatroom.data.Message
 import com.example.chatroom.databinding.FragmentChatBinding
 import com.example.chatroom.domain.ChatViewModel
 import com.example.chatroom.ui.adapters.MessageAdapter
+import com.example.chatroom.ui.dialogs.ClearChatDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import dagger.hilt.android.AndroidEntryPoint
