@@ -78,7 +78,7 @@ class LogInFragment : Fragment() {
             } catch (_: IllegalArgumentException) {
                 Toast.makeText(
                     requireContext(),
-                    "Enter your name, email and password!",
+                    "Enter your email and password!",
                     Toast.LENGTH_SHORT
                 )
                     .show()
