@@ -18,19 +18,21 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
+        android:elevation="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/message_box_and_send_button_background"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:weightSum="100"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
             android:id="@+id/messageBoxEditText"
+            android:layout_margin="10dp"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="90"
+            android:layout_height="37dp"
+            android:layout_weight="91"
             android:autofillHints="string"
+            android:layout_gravity="center_vertical"
             android:background="@drawable/message_box_background"
             android:hint="@string/type_a_message"
             android:inputType="text"
@@ -42,11 +44,13 @@
         <ImageView
             android:id="@+id/sendButtonImageView"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="15dp"
-            android:layout_weight="10"
+            android:elevation="@dimen/cardview_compat_inset_shadow"
+            android:layout_height="40dp"
+            android:layout_marginEnd="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="9"
             android:contentDescription="sendButton"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@drawable/send" />
 
     </LinearLayout>
